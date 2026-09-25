@@ -9,6 +9,18 @@ import java.util.Objects;
  * 标题不允许为空。</p>
  */
 public class Task {
+    // 1. 新增字段（默认优先级设为 MEDIUM）
+    private edu.hbuas.campustodo.model.Priority priority = edu.hbuas.campustodo.model.Priority.MEDIUM;
+
+    // 2. 新增 getter 方法
+    public edu.hbuas.campustodo.model.Priority getPriority() {
+        return priority;
+    }
+
+    // 3. 新增 setter 方法
+    public void setPriority(edu.hbuas.campustodo.model.Priority priority) {
+        this.priority = priority;
+    }
 
     private final long id;
     private final String title;
