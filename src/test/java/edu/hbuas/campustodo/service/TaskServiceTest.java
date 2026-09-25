@@ -1,5 +1,5 @@
 package edu.hbuas.campustodo.service;
-
+import edu.hbuas.campustodo.model.Priority;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -69,5 +69,27 @@ class TaskServiceTest {
     @DisplayName("标题为 null 时拒绝新增任务")
     void shouldRejectNullTitle() {
         assertThrows(IllegalArgumentException.class, () -> service.addTask(null));
+    }
+    @Test
+    @DisplayName("根据优先级筛选任务，只返回匹配优先级的任务")
+    void testFilterByPriority() {
+        // Given: 准备不同优先级的任务
+        Task highTask1 = service.addTask("写高优先级作业");
+        highTask1.setPriority(Priority.HIGH); // 这里会红，因为Task还没这方法
+
+        Task highTask2 = service.addTask("复习高优先级考试");
+        highTask2.setPriority(Priority.HIGH);
+
+        Task lowTask = service.addTask("看剧");
+        lowTask.setPriority(Priority.LOW);
+
+        // When: 调用即将实现的方法
+        List<Task> highPriorityTasks = service.filterByPriority(Priority.HIGH); // 这里也会红
+
+        // Then: 断言结果
+        assertAll(
+                () -> assertEquals(2, highPriorityTasks.size(), "应该只筛出 2 个高优先级任务"),
+                () -> assertTrue(highPriorityTasks.stream().allMatch(t -> t.getPriority() == Priority.HIGH), "筛选出的任务必须都是 HIGH 优先级")
+        );
     }
 }
