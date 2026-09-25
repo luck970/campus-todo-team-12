@@ -1,8 +1,9 @@
 package edu.hbuas.campustodo.service;
-
+import edu.hbuas.campustodo.model.Priority;
 import edu.hbuas.campustodo.model.Task;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 任务服务：管理任务的新增与查询。
@@ -10,6 +11,12 @@ import java.util.List;
  * <p>本类不依赖数据库，全部任务保存在内存中，便于实验中的单元测试。</p>
  */
 public class TaskService {
+    // 新增按优先级筛选的方法
+    public List<Task> filterByPriority(Priority priority) {
+        return tasks.stream()
+                .filter(task -> task.getPriority() == priority)
+                .collect(Collectors.toList());
+    }
 
     private final List<Task> tasks = new ArrayList<>();
     private long nextId = 1L;
@@ -38,4 +45,5 @@ public class TaskService {
     public List<Task> listAll() {
         return List.copyOf(tasks);
     }
+
 }
